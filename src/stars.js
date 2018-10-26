@@ -18,6 +18,7 @@
             starClass: '',
             value: 0,
             text: null,
+            titles: [],
             click: function() {}
         }, options);
         
@@ -30,6 +31,10 @@
                 icon.addClass(settings.emptyIcon);
             } else {
                 icon.addClass("fa").addClass(settings.emptyIcon);
+            }
+            
+            if ($.isArray(settings.titles) && x < settings.length) {
+                icon.attr("title", settings.titles[x]);
             }
             
             if (settings.text) {    
