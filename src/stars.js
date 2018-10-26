@@ -10,6 +10,7 @@
     $.fn.stars = function(options) {
 
         var settings = $.extend({
+            readonly: false,
             stars: 5,
             emptyIcon: 'fa-star-o',
             filledIcon: 'fa-star',
@@ -43,18 +44,22 @@
         
         var stars = this.find("i");
 
-        stars.on("mouseover", function() {
-            var index = $(this).index() + 1;
-            var starsHovered = stars.slice(0, index);
-            events.removeFilledStars(stars, settings);
-            events.fillStars(starsHovered, settings);
-            
-            if (settings.text) block.find(".rating-text").html($(this).data("rating-text"));
-        }).on("mouseout", function() {
-            events.removeFilledStars(stars, settings);
-            events.fillStars(stars.filter(".selected"), settings);
-            if (settings.text) block.find(".rating-text").html("");
-        }).on("click", function() {
+        if (!settings.readonly) {
+            stars.on("mouseover", function() {
+                var index = $(this).index() + 1;
+                var starsHovered = stars.slice(0, index);
+                events.removeFilledStars(stars, settings);
+                events.fillStars(starsHovered, settings);
+
+                if (settings.text) block.find(".rating-text").html($(this).data("rating-text"));
+            }).on("mouseout", function() {
+                events.removeFilledStars(stars, settings);
+                events.fillStars(stars.filter(".selected"), settings);
+                if (settings.text) block.find(".rating-text").html("");
+            });
+        }
+        
+        stars.on("click", function() {
             var index = $(this).index();
             settings.value = index + 1;
             stars.removeClass("selected").slice(0, settings.value).addClass("selected");
