@@ -163,9 +163,18 @@
                         changeValue = opt.click.call(stars.get(index), el, newValue);
                     }
 
-                    if (changeValue == undefined || changeValue) {
-                        opt.value = newValue;
-                        stars.removeClass("selected").slice(0, newValue).addClass("selected");
+                    if ($.isFunction(changeValue.then)) {
+                        changeValue.done(function (result) {
+                            if (result == undefined || result) {
+                                opt.value = newValue;
+                                stars.removeClass("selected").slice(0, newValue).addClass("selected");
+                            }
+                        });
+                    } else {
+                        if (changeValue == undefined || changeValue) {
+                            opt.value = newValue;
+                            stars.removeClass("selected").slice(0, newValue).addClass("selected");
+                        }
                     }
                 });
             }
